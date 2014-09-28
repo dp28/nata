@@ -13,11 +13,19 @@ describe "StaticPages" do
     it "should have the title '#{name} | Nata'" do
       visit "/static_pages/#{path_extension}"
       expect(page).to have_title("#{name} | Nata")
-    end 
+    end  
   end
 
-  describe "Home page" do
-    it_should_behave_like "a static page", "Home"
+  describe "Home page" do 
+    it "should have the content 'Nata'" do
+      visit "/static_pages/home"
+      expect(page).to have_content("Nata")
+    end
+
+    it "should have the title 'Nata'" do
+      visit "/static_pages/home"
+      expect(page).to have_title("Nata")
+    end
   end
 
   describe "Help page" do

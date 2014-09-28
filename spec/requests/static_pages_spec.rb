@@ -6,14 +6,14 @@ describe "StaticPages" do
     path_extension ||= name.downcase
 
     it "should have the content '#{name}'" do
-      visit "/static_pages/#{path_extension}"
+      visit "/static_pages/#{path_extension}"  
       expect(page).to have_content(name)
     end
 
     it "should have the title '#{name} | Nata'" do
       visit "/static_pages/#{path_extension}"
       expect(page).to have_title("#{name} | Nata")
-    end
+    end 
   end
 
   describe "Home page" do

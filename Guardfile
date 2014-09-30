@@ -2,7 +2,7 @@
 # More info at https://github.com/guard/guard#readme
 require 'active_support/inflector'
 
-guard :rspec, cmd:"spring rspec" do
+guard :rspec, cmd: "bin/rspec", cmd_additional_args: "--format d" do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }

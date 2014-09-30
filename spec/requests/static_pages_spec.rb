@@ -2,17 +2,19 @@ require 'spec_helper'
 
 describe "StaticPages" do
 
+  subject { page }
+
   shared_examples_for "a static page" do |name, path_extension|
     path_extension ||= name.downcase
     before { visit "/#{path_extension}" }
-    it { expect(page).to have_content(name) }
-    it { expect(page).to have_title("#{name} | Nata") }  
+    it { should have_content(name) }
+    it { should have_title(full_title(name)) }  
   end
 
   describe "Home page" do 
     before { visit root_path }
-    it { expect(page).to have_content("Nata") }
-    it { expect(page).to have_title("Nata") }
+    it { should have_content("Nata") }
+    it { should have_title(full_title) }
   end 
 
   describe "Help page" do

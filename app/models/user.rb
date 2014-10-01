@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
-  before_save { self.email = email.downcase }
+  before_save { email.downcase! }
 
   MAX_USER_NAME_LENGTH = 64
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i # Accepts consecutive dots ...
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
 
   validates :name, presence: true, length: { maximum: MAX_USER_NAME_LENGTH }
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, 

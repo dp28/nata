@@ -20,6 +20,8 @@ group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem 'guard-rspec', '2.5.0'
   gem 'spring-commands-rspec'
+  gem 'better_errors'
+  gem 'meta_request'
 end
 
 group :test do

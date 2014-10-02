@@ -21,6 +21,7 @@ group :development, :test do
   gem 'guard-rspec', '2.5.0'
   gem 'spring-commands-rspec'
   gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'meta_request'
 end
 
@@ -29,6 +30,8 @@ group :test do
   gem 'capybara', '2.1.0'
   gem 'libnotify', '0.8.0'
   gem 'factory_girl_rails', '4.2.0'
+  gem 'cucumber-rails', '1.4.0', :require => false
+  gem 'database_cleaner', github: 'bmabey/database_cleaner'
 end
 
 group :doc do

@@ -1,0 +1,7 @@
+- provide :title, "Edit user"
+h1 Update your profile
+.row
+  .span6.offset3
+    = form_for(@user) do |form| 
+      = render "fields", form: form
+      = form.submit "Save changes", class: "btn btn-large btn-primary"

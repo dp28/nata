@@ -49,7 +49,7 @@ describe "Authentication" do
     context "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
 
-      describe "in the Users controller" do
+      context "in the Users controller" do
 
         context "visiting the edit page" do
           before { visit edit_user_path(user) }
@@ -101,7 +101,7 @@ describe "Authentication" do
       end
     end
 
-    describe "as non-admin user" do
+    context "as non-admin user" do
       let!(:user) { FactoryGirl.create :user }
       let!(:non_admin) { FactoryGirl.create :user }
 
@@ -115,5 +115,18 @@ describe "Authentication" do
         end
       end
     end
+
+    context "in the Tasks controller" do
+
+        describe "submitting to the create action" do
+          before { post tasks_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete task_path(FactoryGirl.create(:task)) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
   end
 end

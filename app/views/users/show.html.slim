@@ -4,3 +4,11 @@
     section
       h1
         = @user.name 
+  .span8
+    - if @user.tasks.any? 
+      h3 
+        | Tasks 
+        = @user.tasks.count 
+      ol.tasks
+        = render @tasks
+      = will_paginate @tasks

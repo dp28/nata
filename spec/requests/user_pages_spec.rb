@@ -81,7 +81,7 @@ describe "User pages" do
 
       it "should list each user" do
         User.paginate(page: 1).each do |user|
-          expect(page).to have_selector('li', text: user.name)
+          expect(page).to have_selector('li', text: user.name) 
         end
       end
     end
@@ -152,6 +152,25 @@ describe "User pages" do
       it { should have_link('Sign out', href: signout_path) }
       specify { expect(user.reload.name).to  eq new_name }
       specify { expect(user.reload.email).to eq new_email }
+    end
+  end
+
+  describe "profile page" do
+    let(:user) { FactoryGirl.create :user }
+    let!(:task1) { FactoryGirl.create :task, user: user }
+    let!(:task2) { FactoryGirl.create :completed_task, user: user }
+
+    before { visit user_path(user) }
+
+    it { should have_content(user.name) }
+    it { should have_title(user.name) }
+
+    describe "tasks" do
+      it { should have_content(task1.content) }
+      it { should have_content(task2.content) }
+      it { should have_css(".status.completed") }
+      it { should have_css(".status.incomplete") }
+      it { should have_content(user.tasks.count) }
     end
   end
 end

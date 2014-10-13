@@ -1,0 +1,6 @@
+h1
+  = current_user.name
+span
+  = link_to "profile", current_user
+span
+  = pluralize current_user.tasks.count, "task"

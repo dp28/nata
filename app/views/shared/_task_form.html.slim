@@ -1,0 +1,5 @@
+= form_for(@task) do |form| 
+  = render 'shared/error_messages', object: form.object
+  .field
+    = form.text_area :content, placeholder: "Add new task ..." 
+  = form.submit "Add", class: "btn btn-large btn-primary"

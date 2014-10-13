@@ -17,6 +17,8 @@ describe User do
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:admin) }
+  it { should respond_to(:tasks) }
+  it { should respond_to(:feed) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -122,5 +124,30 @@ describe User do
   describe "with a password that's too short" do
     before { @user.password = @user.password_confirmation = "a" * 5 }
     it { should be_invalid }
+  end
+
+  describe "task associations" do
+    before { @user.save }
+    let!(:older_task) { FactoryGirl.create :task, user: @user, created_at: 1.day.ago }
+    let!(:newer_task) { FactoryGirl.create :task, user: @user, created_at: 1.hour.ago }
+
+    it "should destroy associated tasks" do
+      tasks = @user.tasks.to_a
+      @user.destroy
+      expect(tasks).not_to be_empty
+      tasks.each do |tasks|
+        expect(Task.where(id: tasks.id)).to be_empty
+      end
+    end
+
+    describe "status" do
+      let(:completed_task) { FactoryGirl.create :completed_task, user: @user }
+      let(:other_user_task) { FactoryGirl.create :task, user: FactoryGirl.create(:user) }
+
+      its(:feed) { should include(older_task) }
+      its(:feed) { should include(newer_task) }
+      its(:feed) { should_not include(completed_task) }
+      its(:feed) { should_not include(other_user_task) }
+    end
   end
 end

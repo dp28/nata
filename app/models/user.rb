@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :tasks, dependent: :destroy
   before_save { email.downcase! }
   before_create :create_remember_token
 
@@ -7,7 +8,7 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true, length: { maximum: MAX_USER_NAME_LENGTH }
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, 
-            uniqueness: { case_sensitive: false }
+            uniqueness: { case_sensitive: false } 
   validates :password, length: { minimum: 6 }
   has_secure_password
 
@@ -17,6 +18,10 @@ class User < ActiveRecord::Base
 
   def self.digest(token)
     Digest::SHA1.hexdigest(token.to_s)
+  end
+
+  def feed
+    tasks.incomplete.order(:created_at)
   end
 
   private

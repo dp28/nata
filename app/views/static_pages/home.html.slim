@@ -1,9 +1,4 @@
-.center.hero-unit
-  h1 Nata
-
-  h2 
-    ' This is a test home page based on the
-    a href="http://railstutorial.org/" Ruby on Rails Tutorial 
-    '  sample application.
-
-  = link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary"
+- if signed_in? 
+  = render "static_pages/signed_in_home"
+- else
+  = render "static_pages/default_home"

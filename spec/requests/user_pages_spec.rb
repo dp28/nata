@@ -130,7 +130,7 @@ describe "User pages" do
                   password_confirmation: user.password } }
       end
       before do
-        sign_in_without_capybara user
+        sign_in_without_capybara user 
         patch user_path(user), params
       end
       specify { expect(user.reload).not_to be_admin }

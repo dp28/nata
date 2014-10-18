@@ -1,32 +1,42 @@
 class User < ActiveRecord::Base
   has_many :tasks, dependent: :destroy
   before_save { email.downcase! }
-  before_create :create_remember_token
 
   MAX_USER_NAME_LENGTH = 64
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
+  attr_accessor :remember_token
 
   validates :name, presence: true, length: { maximum: MAX_USER_NAME_LENGTH }
-  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, 
-            uniqueness: { case_sensitive: false } 
   validates :password, length: { minimum: 6 }
+  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, 
+              uniqueness: { case_sensitive: false } 
   has_secure_password
 
-  def self.new_remember_token
+
+  def User.digest string 
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    BCrypt::Password.create string, cost: cost
+  end
+
+  def User.new_token
     SecureRandom.urlsafe_base64
   end
 
-  def self.digest(token)
-    Digest::SHA1.hexdigest(token.to_s)
+  def remember
+    self.remember_token = User.new_token
+    update_attribute :remember_digest, User.digest(remember_token)
+  end
+
+  def forget
+    update_attribute :remember_digest, nil 
+  end
+
+  def authenticated? remember_token
+    return false if remember_digest.nil?
+    BCrypt::Password.new(remember_digest).is_password? remember_token
   end
 
   def feed
-    tasks.incomplete.order(:created_at)
+    tasks.incomplete.order :created_at
   end
-
-  private
-
-    def create_remember_token
-      self.remember_token = User.digest(User.new_remember_token)
-    end
 end

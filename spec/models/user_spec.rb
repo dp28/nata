@@ -2,12 +2,11 @@ require 'spec_helper'
 
 describe User do
 
-  before do
-    @user = User.new(name: "Example User", email: "user@example.com", password: "foobar",
-                            password_confirmation: "foobar") 
+  subject(:user) do
+    User.new(name: "Example User", email: "user@example.com", password: "foobar",
+              password_confirmation: "foobar") 
   end
 
-  subject { @user }
 
   it { should respond_to(:name) }
   it { should respond_to(:email) }
@@ -16,6 +15,7 @@ describe User do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:authenticated?) }
   it { should respond_to(:admin) }
   it { should respond_to(:tasks) }
   it { should respond_to(:feed) }
@@ -25,30 +25,25 @@ describe User do
 
   describe "with admin attribute set to 'true'" do
     before do
-      @user.save!
-      @user.toggle! :admin
+      user.save!
+      user.toggle! :admin
     end
 
     it { should be_admin }
   end
-  
-  describe "remember token" do
-    before { @user.save }
-    its(:remember_token) { should_not be_blank }
-  end
 
   context "when name is not present" do
-    before { @user.name = " " }
+    before { user.name = " " }
     it { should_not be_valid }
   end
 
   context "when email is not present" do
-    before { @user.email = " " }
+    before { user.email = " " }
     it { should_not be_valid }
   end
 
   context "when name is too long" do
-    before { @user.name = "a" * 65 }
+    before { user.name = "a" * 65 }
     it { should_not be_valid }
   end
 
@@ -57,8 +52,8 @@ describe User do
       addresses = %w[user@foo,com user_at_foo.org example.user@foo.
                      foo@bar_baz.com foo@bar+baz.com, foo@bar..com]
       addresses.each do |invalid_address|
-        @user.email = invalid_address
-        expect(@user).not_to be_valid
+        user.email = invalid_address
+        expect(user).not_to be_valid
       end
     end
   end
@@ -67,15 +62,15 @@ describe User do
     it "should be valid" do
       addresses = %w[user@foo.COM A_US-ER@f.b.org frst.lst@foo.jp a+b@baz.cn]
       addresses.each do |valid_address|
-        @user.email = valid_address
-        expect(@user).to be_valid
+        user.email = valid_address
+        expect(user).to be_valid
       end
     end
   end
 
   context "when email address is already taken" do
     before do
-      user_with_same_email = @user.dup
+      user_with_same_email = user.dup
       user_with_same_email.save
     end
 
@@ -84,8 +79,8 @@ describe User do
 
   context "when lowercase version of email address is already taken" do
     before do
-      user_with_same_email = @user.dup
-      user_with_same_email.email = @user.email.upcase
+      user_with_same_email = user.dup
+      user_with_same_email.email = user.email.upcase
       user_with_same_email.save
     end
 
@@ -93,24 +88,24 @@ describe User do
   end
 
   context "when password is not present" do
-    before do
-      @user = User.new(name: "Example User", email: "user@example.com",
-                       password: " ", password_confirmation: " ")
+    subject(:user) do
+      User.new(name: "Example User", email: "user@example.com", password: " ", 
+        password_confirmation: " ")
     end
     it { should_not be_valid }
   end
 
   context "when password doesn't match confirmation" do
-    before { @user.password_confirmation = "mismatch" }
+    before { user.password_confirmation = "mismatch" }
     it { should_not be_valid }
   end
 
   describe "#authenticate" do
-    before { @user.save }
-    let(:found_user) { User.find_by(email: @user.email) }
+    before { user.save }
+    let(:found_user) { User.find_by(email: user.email) }
 
     context "with valid password" do
-      it { should eq found_user.authenticate(@user.password) }
+      it { should eq found_user.authenticate(user.password) }
     end
 
     context "with invalid password" do
@@ -121,19 +116,25 @@ describe User do
     end
   end
 
+  describe "#authenticated?" do
+    context "when the user has a nil remember_digest" do
+      specify { expect(user.authenticated?("")).to be false }
+    end
+  end
+
   describe "with a password that's too short" do
-    before { @user.password = @user.password_confirmation = "a" * 5 }
+    before { user.password = user.password_confirmation = "a" * 5 }
     it { should be_invalid }
   end
 
   describe "task associations" do
-    before { @user.save }
-    let!(:older_task) { FactoryGirl.create :task, user: @user, created_at: 1.day.ago }
-    let!(:newer_task) { FactoryGirl.create :task, user: @user, created_at: 1.hour.ago }
+    before { user.save }
+    let!(:older_task) { FactoryGirl.create :task, user: user, created_at: 1.day.ago }
+    let!(:newer_task) { FactoryGirl.create :task, user: user, created_at: 1.hour.ago }
 
     it "should destroy associated tasks" do
-      tasks = @user.tasks.to_a
-      @user.destroy
+      tasks = user.tasks.to_a
+      user.destroy
       expect(tasks).not_to be_empty
       tasks.each do |tasks|
         expect(Task.where(id: tasks.id)).to be_empty
@@ -141,7 +142,7 @@ describe User do
     end
 
     describe "status" do
-      let(:completed_task) { FactoryGirl.create :completed_task, user: @user }
+      let(:completed_task) { FactoryGirl.create :completed_task, user: user }
       let(:other_user_task) { FactoryGirl.create :task, user: FactoryGirl.create(:user) }
 
       its(:feed) { should include(older_task) }

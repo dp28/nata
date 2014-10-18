@@ -8,9 +8,9 @@ def sign_in user
 end
 
 def sign_in_without_capybara user
-  remember_token = User.new_remember_token
-  cookies[:remember_token] = remember_token
-  user.update_attribute(:remember_token, User.digest(remember_token))
+  user.remember
+  cookies[:user_id] = user.id
+  cookies[:remember_token] = user.remember_token
 end
 
 RSpec::Matchers.define :have_error_message do |message|

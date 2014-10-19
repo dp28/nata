@@ -13,7 +13,7 @@ describe "StaticPages" do
 
   describe "Home page" do 
     before { visit root_path }
-    it { should have_content("Nata") }
+    it { should have_content(I18n.t("name")) }
     it { should have_title(full_title) }
 
     context "for signed-in users" do

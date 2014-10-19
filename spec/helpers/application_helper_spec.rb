@@ -8,7 +8,7 @@ describe ApplicationHelper do
     end
 
     it "should include the base title" do
-      expect(full_title("foo")).to match(/Nata$/)
+      expect(full_title("foo")).to match(/#{I18n.t 'name'}$/)
     end
 
     it "should not include a bar for the home page" do

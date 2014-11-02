@@ -1,15 +1,21 @@
 Rails.application.routes.draw do
-  resources :users
-  resources :sessions, only: [:new, :create, :destroy]
-  resources :tasks, only: [:create, :destroy, :edit]
+  get 'password_resets/new'
 
-  root 'static_pages#home'
-  get '/signup',      to: 'users#new' 
-  get '/help',        to: 'static_pages#help'
-  get '/about',       to: 'static_pages#about'
-  get '/contact',     to: 'static_pages#contact'
-  get '/signin',      to: 'sessions#new'
-  delete '/signout',  to: 'sessions#destroy'
+  get 'password_resets/edit'
+
+  resources :users
+  resources :sessions,            only: [:new, :create, :destroy]
+  resources :tasks,               only: [:create, :destroy, :edit]
+  resources :account_activations, only: [:edit]
+  resources :password_resets,     only: [:new, :create, :edit, :update]
+
+  root    'static_pages#home'
+  get     '/signup',  to: 'users#new' 
+  get     '/help',    to: 'static_pages#help'
+  get     '/about',   to: 'static_pages#about'
+  get     '/contact', to: 'static_pages#contact'
+  get     '/signin',  to: 'sessions#new'
+  delete  '/signout', to: 'sessions#destroy'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

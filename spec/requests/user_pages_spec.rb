@@ -49,14 +49,31 @@ describe "User pages" do
       it "should create a user" do
         expect { click_button submit }.to change(User, :count).by 1 
       end
+
+      it "should send an email" do
+        expect { click_button submit }.to change { ActionMailer::Base.deliveries.size }.by(1)
+      end
       
       context "after saving the user" do
         before { click_button submit }
         let(:user) { User.find_by email: 'user@example.com' }
 
-        it { should have_link 'Sign out'  }
-        it { should have_title user.name  }
-        it { should have_selector 'div.alert.alert-success', text: 'Welcome'  }
+        it { should have_link 'Sign in'  }
+        it { should have_selector 'div.alert.alert-info', text: 'activate'  }
+        specify { expect(user.activation_digest).not_to be nil }
+
+        context "signing in after activation" do
+          before do
+            user.update_attributes activated: true, password: "foobar"
+            user.save!
+            visit signin_path
+            fill_in "Email",        with: "user@example.com"
+            fill_in "Password",     with: "foobar"
+            click_button "Sign in"
+          end
+
+          it { should have_link "Sign out" }
+        end
       end
     end
   end

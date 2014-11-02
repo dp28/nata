@@ -1,0 +1,10 @@
+- provide :title, "Forgot password"
+h1 Forgotten password
+
+.row
+  .col-md-6.col-md-offset-3
+    = form_tag password_resets_path do 
+      = label_tag       :email 
+      = text_field_tag  :email, nil, class: 'form-control' 
+
+      = submit_tag "Submit", class: "btn btn-primary"

@@ -118,7 +118,7 @@ describe User do
 
   describe "#authenticated?" do
     context "when the user has a nil remember_digest" do
-      specify { expect(user.authenticated?("")).to be false }
+      specify { expect(user.authenticated?(:remember, "")).to be false }
     end
   end
 

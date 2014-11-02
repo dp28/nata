@@ -27,7 +27,7 @@ describe "Authentication" do
     end
 
     context "with valid information" do
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user) { FactoryGirl.create :user }
       before  { sign_in user }
 
       it { should have_title(user.name) }
@@ -45,6 +45,13 @@ describe "Authentication" do
           before { delete signout_path }
           it { should have_link "Sign in"}
         end
+      end
+
+      context "when not authenticated" do
+        let(:user) { FactoryGirl.create :unauthenticated_user }
+        before  { sign_in user }
+
+        it { should have_error_message "not activated" }
       end
     end
   end

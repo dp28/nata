@@ -4,14 +4,6 @@ describe "User pages" do
 
   subject { page }
 
-  describe "profile page" do
-    let(:user) { FactoryGirl.create :user  }
-    before { visit user_path user  }
-
-    it { should have_content user.name  }
-    it { should have_title user.name  }
-  end
-
   describe "signup page" do
     before { visit signup_path }
 
@@ -179,11 +171,14 @@ describe "User pages" do
   end
 
   describe "profile page" do
-    let(:user) { FactoryGirl.create :user }
-    let!(:task1) { FactoryGirl.create :task, user: user }
-    let!(:task2) { FactoryGirl.create :completed_task, user: user }
+    let(:user)    { FactoryGirl.create :user }
+    let!(:task1)  { FactoryGirl.create :task, user: user }
+    let!(:task2)  { FactoryGirl.create :completed_task, user: user }
 
-    before { visit user_path(user) }
+    before do
+      sign_in user
+      visit user_path(user) 
+    end
 
     it { should have_content(user.name) }
     it { should have_title(user.name) }

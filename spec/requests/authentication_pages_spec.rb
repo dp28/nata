@@ -108,6 +108,11 @@ describe "Authentication" do
         before  { patch user_path(wrong_user) }
         specify { expect(response).to redirect_to signin_path }
       end
+
+      describe "submitting a GET request to the Users#show action" do
+        before  { get user_path(wrong_user) }
+        specify { expect(response).to redirect_to signin_path }
+      end
     end
 
     context "as non-admin user" do
@@ -128,13 +133,11 @@ describe "Authentication" do
 
     context "as an admin user" do
       let(:admin) { FactoryGirl.create :admin }
-      before do 
-        sign_in_without_capybara admin
-        get users_path
+      before { sign_in admin }
+      context "visiting the users_path" do
+        before  { visit users_path }
+        specify { expect(page.current_url).to match(users_path) }
       end
-
-      specify { expect(response.body).to match("Users") } 
-      specify { expect(response.body).to match(users_path) } 
     end
 
     context "in the Tasks controller" do

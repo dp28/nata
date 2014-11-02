@@ -24,8 +24,8 @@ section {
   overflow: auto;
 }
 
-textarea {
-  resize: vertical;
+#task_content {
+  height: 30px; 
 }
 
 .center {

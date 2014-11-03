@@ -1,12 +1,17 @@
-- if task.completed? 
-  span.span1.status.completed ☑
-- else
-  span.span1.status.incomplete ☐
-span.content
-  = task.content
-- if current_user? task.user
-  = link_to "delete", task, { method: :delete, 
-                              data: { confirm: "Are you sure?" },
-                              title: task.content,
-                              remote: true,
-                              class: "delete_task" }
+.task *{ id: "task_#{task.id}" }
+
+  
+  - if task.completed? 
+    = link_to "☑", { controller: :tasks, action: :uncomplete, id: task.id }, 
+      { remote: true, class: :completed, method: :post }
+  - else
+    = link_to "☐", { controller: :tasks, action: :complete, id: task.id }, 
+      { remote: true, class: :incomplete, method: :post }
+  span.content
+    = task.content
+  - if current_user? task.user
+    = link_to "delete", task, { method: :delete, 
+                                data: { confirm: "Are you sure?" },
+                                title: task.content,
+                                remote: true,
+                                class: "delete_task" }

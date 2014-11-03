@@ -1,0 +1,5 @@
+$('#task_<%= @task.id %>').fadeOut(function(){
+   var task_html = $("<%= escape_javascript(render('tasks/single_task', task: @task)) %>").hide();
+   $(this).replaceWith(task_html);
+   $('#task_<%= @task.id %>').fadeIn();
+});

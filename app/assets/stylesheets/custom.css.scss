@@ -197,20 +197,24 @@ input {
     border-top: 1px solid #e8e8e8;
   }
 }
+.task {
 
-.content {
-  display: inline;
-}
+  a {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 
-.status {
-}
+  .content {
+    display: inline;
+  }
 
-.completed {
-  color: green;
-}
+  .completed {
+    color: green;
+  }
 
-.incomplete {
-  color: red;
+  .incomplete {
+    color: red;
+  }
 }
 
 aside {

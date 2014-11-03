@@ -4,7 +4,8 @@ describe "Task pages" do
 
   subject { page }
 
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user)  { FactoryGirl.create(:user) }
+  let!(:task) { FactoryGirl.create(:task, user: user) }
   before { sign_in user }
 
   describe "task creation" do
@@ -32,13 +33,40 @@ describe "Task pages" do
   end
 
   describe "task destruction" do
-    before { FactoryGirl.create(:task, user: user) }
-
     context "as correct user" do
       before { visit root_path }
 
       it "should delete a task" do
         expect { click_link "delete" }.to change(Task, :count).by(-1)
+      end
+    end
+  end
+
+  describe "task completion" do
+    context "as correct user" do
+      before { visit root_path }
+
+      it "should complete the task" do
+        expect { 
+          page.find(".completed").click
+          task.reload 
+        }.to change(task, :completed?).from(false).to(true)
+      end
+    end
+  end
+
+  describe "tuncompleting a task" do
+    context "as correct user" do
+      before do
+        task.complete!
+        visit root_path 
+      end
+
+      it "should uncomplete the task" do
+        expect { 
+          page.find(".incomplete").click
+          task.reload 
+        }.to change(task, :completed?).from(true).to(false)
       end
     end
   end

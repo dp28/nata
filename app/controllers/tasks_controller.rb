@@ -16,8 +16,26 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to root_url }
-      format.js   { render :layout => false }
+      format.html { redirect_to :back }
+      format.js   { render layout: false }
+    end
+  end
+
+  def complete
+    @task = Task.find(params[:id])
+    @task.complete!
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js   { render layout: false }
+    end
+  end
+
+  def uncomplete
+    @task = Task.find(params[:id])
+    @task.uncomplete!
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js   { render layout: false }
     end
   end
 

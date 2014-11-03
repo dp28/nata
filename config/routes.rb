@@ -5,7 +5,12 @@ Rails.application.routes.draw do
 
   resources :users
   resources :sessions,            only: [:new, :create, :destroy]
-  resources :tasks,               only: [:create, :destroy, :edit]
+  resources :tasks,               only: [:create, :destroy, :edit] do
+    member do
+      post :complete
+      post :uncomplete
+    end
+  end
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
 

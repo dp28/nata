@@ -15,7 +15,10 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    redirect_to root_url
+    respond_to do |format|
+      format.html { redirect_to root_url }
+      format.js   { render :layout => false }
+    end
   end
 
   private

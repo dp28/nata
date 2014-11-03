@@ -5,4 +5,8 @@
 span.content
   = task.content
 - if current_user? task.user
-  = link_to "delete", task, method: :delete, data: { confirm: "Are you sure?" }, title: task.content
+  = link_to "delete", task, { method: :delete, 
+                              data: { confirm: "Are you sure?" },
+                              title: task.content,
+                              remote: true,
+                              class: "delete_task" }

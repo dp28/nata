@@ -34,7 +34,7 @@ describe "Task pages" do
 
   describe "task destruction" do
     context "as correct user" do
-      before { visit root_path }
+      before { visit user_path(user) }
 
       it "should delete a task" do
         expect { click_link "delete" }.to change(Task, :count).by(-1)
@@ -44,27 +44,27 @@ describe "Task pages" do
 
   describe "task completion" do
     context "as correct user" do
-      before { visit root_path }
+      before { visit user_path(user) }
 
       it "should complete the task" do
         expect { 
-          page.find(".completed").click
+          page.find(".incomplete").click 
           task.reload 
         }.to change(task, :completed?).from(false).to(true)
       end
     end
   end
 
-  describe "tuncompleting a task" do
+  describe "uncompleting a task" do
     context "as correct user" do
       before do
         task.complete!
-        visit root_path 
+        visit user_path(user)  
       end
 
       it "should uncomplete the task" do
         expect { 
-          page.find(".incomplete").click
+          page.find(".completed").click
           task.reload 
         }.to change(task, :completed?).from(true).to(false)
       end

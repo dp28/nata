@@ -186,9 +186,9 @@ describe "User pages" do
     describe "tasks" do
       it { should have_content(task1.content) }
       it { should have_content(task2.content) }
-      it { should have_css(".status.completed") }
-      it { should have_css(".status.incomplete") }
-      it { should have_content(user.tasks.count) }
+      it { should have_css(".completed") }
+      it { should have_css(".incomplete") }
+      it { should have_content(user.tasks.count) } 
     end
   end
 end

@@ -1,0 +1,15 @@
+.task_body.col-xs-12
+  - if task.completed? 
+    = link_to "☑", { controller: :tasks, action: :uncomplete, id: task.id }, 
+      { remote: true, class: :completed, method: :post, id: append_id("uncomplete", task) }
+  - else
+    = link_to "☐", { controller: :tasks, action: :complete, id: task.id }, 
+      { remote: true, class: :incomplete, method: :post, id: append_id("complete", task) }
+  span.content
+    = task.content
+  = link_to "delete", task, { method: :delete, 
+                              data: { confirm: "Are you sure?" },
+                              title: task.content,
+                              remote: true,
+                              class: "delete_task",
+                              id: append_id("delete", task) }

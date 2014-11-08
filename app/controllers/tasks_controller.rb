@@ -6,11 +6,10 @@ class TasksController < ApplicationController
     @task = create_task
     if @task.save
       flash[:success] = "Task added"
-      redirect_to :back
     else 
-      flash[:danger] = "Failed to add task"     
-      redirect_to :back
+      flash[:danger] = "Failed to add task" 
     end
+    respond
   end
 
   def destroy    
@@ -19,28 +18,19 @@ class TasksController < ApplicationController
     else
       flash[:danger] = "You cannot delete this task"
     end
-    respond_to do |format|
-      format.html { redirect_to :back }
-      format.js   { render layout: false }
-    end 
+    respond
   end
 
   def complete
     @task = Task.find(params[:id])
     @task.complete!
-    respond_to do |format|
-      format.html { redirect_to :back }
-      format.js   { render layout: false }
-    end
+    respond
   end
 
   def uncomplete
     @task = Task.find(params[:id])
     @task.uncomplete!
-    respond_to do |format|
-      format.html { redirect_to :back }
-      format.js   { render layout: false }
-    end
+    respond
   end
 
   private
@@ -67,5 +57,12 @@ class TasksController < ApplicationController
       else
         @task.destroy
       end
+    end
+
+    def respond      
+      respond_to do |format|
+        format.html { redirect_to :back }
+        format.js   { render layout: false }
+      end 
     end
 end

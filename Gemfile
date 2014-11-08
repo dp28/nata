@@ -16,7 +16,7 @@ gem 'jbuilder', '1.0.2'
 gem 'slim-rails', '~> 2.1.5'
 gem 'bcrypt-ruby', '3.1.2'
 gem 'faker', '1.1.2'
-gem 'will_paginate', '3.0.4'
+gem 'will_paginate-bootstrap'
 gem 'ancestry'
 gem 'awesome_print'
 

@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       attempt_sign_in user
     else
-      flash.now[:error] = 'Invalid email/password combination'
+      flash.now[:danger] = 'Invalid email/password combination'
       render :new
     end
   end
@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
       if user.activated?
         sign_in_user user
       else
-        flash[:error] = "Account not activated. Check your email for the activation link."
+        flash[:danger] = "Account not activated. Check your email for the activation link."
         redirect_to root_url
       end
     end

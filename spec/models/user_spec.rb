@@ -151,8 +151,6 @@ describe User do
       newer_task.update_attribute :created_at, 1.hour.ago
     end 
 
-    its(:root_list) { should_not be nil }
-
     describe "tasks other than the root list" do
       it "should all be children of the user's root_list" do
         [older_task, newer_task].each do |task|

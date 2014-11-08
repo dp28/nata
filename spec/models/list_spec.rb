@@ -72,7 +72,13 @@ describe Task do
         it "should have the list as its parent" do
           children.each { |child| expect(child.parent).to eq(list) }
         end
+      end 
+    end
+
+    describe "deleting the list" do
+      it "should delete the list and all its children" do
+        expect { list.destroy }.to change(user.root_list.children, :count).to 0
       end
-    end    
+    end   
   end
 end

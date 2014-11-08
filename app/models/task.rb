@@ -1,8 +1,8 @@
 class Task < ActiveRecord::Base
   belongs_to :user
   has_ancestry
-  after_create :add_to_users_lists
-  before_destroy :inform_parent_of_destruction
+  after_create    :add_to_users_lists
+  before_destroy  :handle_destroy
   
   validates :user_id, presence: true
   validates :content, presence: true
@@ -30,6 +30,11 @@ class Task < ActiveRecord::Base
     children.where is_leaf: false
   end
 
+  def destroy
+    children.each(&:destroy)    
+    super
+  end
+
   protected
 
     def task_about_to_be_deleted task
@@ -40,9 +45,11 @@ class Task < ActiveRecord::Base
 
     def add_to_users_lists
       self.parent = user.root_list if parent.nil? && user.root_list != self
+      true
     end
 
-    def inform_parent_of_destruction
+    def handle_destroy
       parent.task_about_to_be_deleted(self) if !root?
+      true
     end
 end

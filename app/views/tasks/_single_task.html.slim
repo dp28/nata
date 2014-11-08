@@ -1,6 +1,6 @@
 .task.row *{ id: "task_#{task.id}" }
 
-  .task_body.row
+  .task_body.col-xs-12
     - if task.completed? 
       = link_to "☑", { controller: :tasks, action: :uncomplete, id: task.id }, 
         { remote: true, class: :completed, method: :post, id: append_id("uncomplete", task) }
@@ -9,15 +9,15 @@
         { remote: true, class: :incomplete, method: :post, id: append_id("complete", task) }
     span.content
       = task.content
-    - if current_user? task.user
-      = link_to "delete", task, { method: :delete, 
-                                  data: { confirm: "Are you sure?" },
-                                  title: task.content,
-                                  remote: true,
-                                  class: "delete_task",
-                                  id: append_id("delete", task) }
-  .task_list.row
-    .col-xs-10.col-xs-offset-2
+    = link_to "delete", task, { method: :delete, 
+                                data: { confirm: "Are you sure?" },
+                                title: task.content,
+                                remote: true,
+                                class: "delete_task",
+                                id: append_id("delete", task) }
+  .task_list.col-xs-11.col-xs-offset-1
       = render "shared/task_form", parent: task
       p= "Has #{task.children.count} children"
-      = render task.children if task.has_children?
+      ul
+        - task.children.each do |child|
+          = render "tasks/task", task: child

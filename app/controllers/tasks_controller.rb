@@ -9,17 +9,20 @@ class TasksController < ApplicationController
       redirect_to :back
     else 
       flash[:danger] = "Failed to add task"     
-      @feed_items = current_user.feed.paginate page: params[:page] 
-      render 'static_pages/home'
+      redirect_to :back
     end
   end
 
-  def destroy
-    @task.destroy
+  def destroy    
+    if attempt_destroy 
+      flash[:success] = "Task deleted"
+    else
+      flash[:danger] = "You cannot delete this task"
+    end
     respond_to do |format|
       format.html { redirect_to :back }
       format.js   { render layout: false }
-    end
+    end 
   end
 
   def complete
@@ -47,8 +50,8 @@ class TasksController < ApplicationController
     end
 
     def create_task
-      task = current_user.add_task task_params
-      task.parent_id = params[:task][:parent_id]
+      parent = Task.find_by id: params[:parent_id]
+      task = parent.add_task task_params
       task
     end
 
@@ -56,5 +59,13 @@ class TasksController < ApplicationController
       @task = current_user.tasks.find params[:id]
     rescue
       redirect_to root_url
+    end
+
+    def attempt_destroy
+      if @task.root?
+        false
+      else
+        @task.destroy
+      end
     end
 end

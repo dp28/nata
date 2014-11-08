@@ -59,10 +59,27 @@ describe "Task pages" do
 
   describe "task destruction" do
     context "as correct user" do
-      before { visit user_path(user) }
+      let(:non_root) { task.add_task content: "non-root" }
+      before do 
+        non_root.save! 
+        visit user_path(user)
+      end
 
-      it "should delete a task" do
-        expect { click_link append_id("delete", task) }.to change(Task, :count).by(-1)
+      context "deleting a root_list" do
+        it "should not be possible" do
+          expect { click_link append_id("delete", task) }.not_to change(Task, :count)
+        end
+
+        it "should show an error message" do
+          click_link append_id("delete", task) 
+          expect(page).to have_error_message "You cannot delete this task"
+        end
+      end
+
+      context "deleting a non-root_task" do
+        it "should delete a task" do
+          expect { click_link append_id("delete", non_root) }.to change(Task, :count).by(-1)
+        end
       end
     end
   end

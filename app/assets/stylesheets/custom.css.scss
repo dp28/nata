@@ -1,12 +1,7 @@
 @import "bootstrap";
 
 /* mixins, variables, etc. */
-
-$grey_lighter:      #eeeeee;
-$grey_medium_light: #eaeaea;
-$grey_light:        #999999;
-$grey:              #555555;
-$grey_darker:       #222222;
+$gray-medium-light: #eaeaea;
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
@@ -54,7 +49,7 @@ h2 {
   margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
-  color: $grey_light;
+  color: $gray-light;
 }
 
 p {
@@ -85,12 +80,12 @@ p {
 footer {
   margin-top: 45px;
   padding-top: 5px;
-  border-top: 1px solid $grey_medium_light;
-  color: $grey_light;
+  border-top: 1px solid $gray-medium-light;
+  color: $gray-light;
   a {
-    color: $grey;
+    color: $gray;
     &:hover {
-      color: $grey_darker;
+      color: $gray-darker;
     }
   }
   small {
@@ -111,7 +106,7 @@ footer {
 aside {
   section {
     padding: 10px 0;
-    border-top: 1px solid $grey_lighter;
+    border-top: 1px solid $gray-lighter;
     &:first-child {
       border: 0;
       padding-top: 0;
@@ -179,61 +174,13 @@ input {
   li {
     overflow: auto;
     padding: 10px 0;
-    border-top: 1px solid $grey_lighter;
+    border-top: 1px solid $gray-lighter;
     &:last-child {
-      border-bottom: 1px solid $grey_lighter;
+      border-bottom: 1px solid $gray-lighter;
     }
   }
 }
 
-/* Tasks */
-
-.tasks {
-  list-style: none;
-  margin: 10px 0 0 0;
-
-  li {
-    padding: 10px 0;
-    border-top: 1px solid #e8e8e8;
-  }
-}
-
-.task {
-
-  a {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-
-  .content {
-    display: inline;
-  }
-
-  .completed {
-    color: green;
-  }
-
-  .incomplete {
-    color: red;
-  }
-}
-
-.task_form {
-  textarea {
-    resize: none;
-  }
-}
-
-#task_content {
-  height: 30px; 
-}
-
-aside {
-  textarea {
-    height: 100px;
-    margin-bottom: 5px;
-  }
-}
 
 /* miscellaneous */
 

@@ -1,14 +1,12 @@
 - provide :title, @user.name
 .row
-  aside.span4
+  aside.col-xs-11.col-md-4
     section
       h1
         = @user.name 
-  .span8
+  .col-xs-11.col-md-8
     - if @user.tasks.any? 
       h3 
         | Tasks 
         = @user.tasks.count 
-      ol.tasks
-        = render @tasks
-      = will_paginate @tasks
+      = render "tasks/single_task", task: @root_list

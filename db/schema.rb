@@ -11,18 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141101215905) do
+ActiveRecord::Schema.define(version: 20141108135518) do
 
   create_table "tasks", force: true do |t|
     t.text     "content"
     t.integer  "user_id"
-    t.integer  "parent_id"
     t.boolean  "completed",  default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ancestry"
+    t.boolean  "is_leaf",    default: true
   end
 
-  add_index "tasks", ["user_id", "created_at", "parent_id"], name: "index_tasks_on_user_id_and_created_at_and_parent_id"
+  add_index "tasks", ["ancestry"], name: "index_tasks_on_ancestry"
+  add_index "tasks", ["user_id", "created_at"], name: "index_tasks_on_user_id_and_created_at_and_parent_id"
 
   create_table "users", force: true do |t|
     t.string   "name"

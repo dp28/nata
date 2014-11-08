@@ -1,17 +1,22 @@
-header.navbar.navbar-fixed-top.navbar-inverse
+#main_navbar.navbar.navbar-fixed-top.navbar-inverse
   .navbar-inner
     .container
-      = link_to t("name"), root_path, id: "logo"
-      nav
-        ul.nav.pull-right
+      .navbar-header
+        = link_to t("name"), root_path, id: "logo", class: "navbar-brand"
+        button.navbar-toggle type="button" data-target="#navbar" data-toggle="collapse"
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+      #navbar.navbar-collapse.collapse
+        ul.nav.navbar-nav
           li= link_to "Home", root_path 
           li= link_to "Help", help_path          
           - if signed_in? 
             li= link_to "Users", users_path if current_user.admin?
             li#fat-menu.dropdown 
-              a.dropdown-toggle href="#" data-toggle="dropdown"
+              a.dropdown-toggle href="#" data-toggle="dropdown" data-with-caret="right" 
                 | Account 
-                b.caret
               ul.dropdown-menu
                 li= link_to "Profile",  current_user 
                 li= link_to "Settings", edit_user_path(current_user)

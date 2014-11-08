@@ -2,7 +2,11 @@
 
 /* mixins, variables, etc. */
 
-$grayMediumLight: #eaeaea;
+$grey_lighter:      #eeeeee;
+$grey_medium_light: #eaeaea;
+$grey_light:        #999999;
+$grey:              #555555;
+$grey_darker:       #222222;
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
@@ -17,15 +21,11 @@ html {
 }
 
 body {
-  padding-top: 60px;
+  padding-top: 80px;
 }
 
 section {
   overflow: auto;
-}
-
-#task_content {
-  height: 30px; 
 }
 
 .center {
@@ -54,7 +54,7 @@ h2 {
   margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
-  color: $grayLight;
+  color: $grey_light;
 }
 
 p {
@@ -85,12 +85,12 @@ p {
 footer {
   margin-top: 45px;
   padding-top: 5px;
-  border-top: 1px solid $grayMediumLight;
-  color: $grayLight;
+  border-top: 1px solid $grey_medium_light;
+  color: $grey_light;
   a {
-    color: $gray;
+    color: $grey;
     &:hover {
-      color: $grayDarker;
+      color: $grey_darker;
     }
   }
   small {
@@ -111,7 +111,7 @@ footer {
 aside {
   section {
     padding: 10px 0;
-    border-top: 1px solid $grayLighter;
+    border-top: 1px solid $grey_lighter;
     &:first-child {
       border: 0;
       padding-top: 0;
@@ -179,9 +179,9 @@ input {
   li {
     overflow: auto;
     padding: 10px 0;
-    border-top: 1px solid $grayLighter;
+    border-top: 1px solid $grey_lighter;
     &:last-child {
-      border-bottom: 1px solid $grayLighter;
+      border-bottom: 1px solid $grey_lighter;
     }
   }
 }
@@ -197,6 +197,7 @@ input {
     border-top: 1px solid #e8e8e8;
   }
 }
+
 .task {
 
   a {
@@ -215,6 +216,16 @@ input {
   .incomplete {
     color: red;
   }
+}
+
+.task_form {
+  textarea {
+    resize: none;
+  }
+}
+
+#task_content {
+  height: 30px; 
 }
 
 aside {
@@ -236,4 +247,10 @@ aside {
 
 .inline {
   display: inline;
+}
+
+.caret-right {
+  border-left: 4px solid;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
 }

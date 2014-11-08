@@ -2,7 +2,7 @@
 # More info at https://github.com/guard/guard#readme
 require 'active_support/inflector'
 
-guard :rspec, cmd: "bin/rspec -f d ." do
+guard :rspec, cmd: "bin/rspec --fail-fast -f d", all_on_start: true do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }

@@ -5,29 +5,54 @@ describe "Task pages" do
   subject { page }
 
   let(:user)  { FactoryGirl.create(:user) }
-  let!(:task) { FactoryGirl.create(:task, user: user) }
+  let!(:task) { user.root_list }
   before { sign_in user }
 
   describe "task creation" do
-    before { visit root_path }
+    let(:add_button) { append_id("add_child_to", task) }
+    before { visit user_path(user) }
 
     context "with invalid information" do
 
-      it "should not create a task" do
-        expect { click_button "Add" }.not_to change(Task, :count)
+      it "should not create a task" do        
+        expect { click_button add_button }.not_to change(Task, :count)
       end
 
       describe "error messages" do
-        before { click_button "Add" }
-        it { should have_content('error') }
+        before { click_button add_button }
+        it { should have_content('Failed') }
       end
     end
 
-    context "with valid information" do
-
-      before { fill_in 'task_content', with: "Lorem ipsum" }
+    context "with valid information" do      
+      before { fill_in append_id("new_child_content", task), with: "Lorem ipsum" }
       it "should create a task" do
-        expect { click_button "Add" }.to change(Task, :count).by(1)
+        expect { click_button add_button }.to change(Task, :count).by(1)
+      end
+    end
+
+    describe "adding subtasks" do
+
+      before do
+        visit user_path(user)
+        fill_in append_id("new_child_content", task), with: "Lorem ipsum"        
+      end
+
+      it "should add a task to the original task's children" do
+        expect { 
+          click_button append_id("add_child_to", task) 
+        }.to change(task.children, :count).by(1)
+      end
+
+      context "after adding a subtask" do
+        before {  click_button append_id("add_child_to", task) }
+        it "should add a new task as a descendent of the parent task's div" do
+          task_div      = "@id='task_#{task.id}'"
+          task_list     = "@class=#{xpath_match_class('task_list')}"
+          task_content  = "@class=#{xpath_match_class('task_content')}"
+          subtask = "//*[#{task_div}]/*[#{task_list}]//*[#{task_content}]"
+          expect(page).to have_xpath(subtask)
+        end
       end
     end
   end
@@ -37,7 +62,7 @@ describe "Task pages" do
       before { visit user_path(user) }
 
       it "should delete a task" do
-        expect { click_link "delete" }.to change(Task, :count).by(-1)
+        expect { click_link append_id("delete", task) }.to change(Task, :count).by(-1)
       end
     end
   end
@@ -48,7 +73,7 @@ describe "Task pages" do
 
       it "should complete the task" do
         expect { 
-          page.find(".incomplete").click 
+          click_link append_id("complete", task)
           task.reload 
         }.to change(task, :completed?).from(false).to(true)
       end
@@ -64,7 +89,7 @@ describe "Task pages" do
 
       it "should uncomplete the task" do
         expect { 
-          page.find(".completed").click
+          click_link append_id("uncomplete", task)
           task.reload 
         }.to change(task, :completed?).from(true).to(false)
       end

@@ -4,8 +4,9 @@ ruby '2.1.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
-gem 'bootstrap-sass', '2.3.2.0'
+gem 'autoprefixer-rails'
 gem "minitest"
+gem 'bootstrap-sass', '~> 3.3.0'
 gem 'sass-rails', '4.0.3'
 gem 'uglifier', '2.1.1'
 gem 'coffee-rails', '4.0.1'
@@ -16,14 +17,14 @@ gem 'slim-rails', '~> 2.1.5'
 gem 'bcrypt-ruby', '3.1.2'
 gem 'faker', '1.1.2'
 gem 'will_paginate', '3.0.4'
-gem 'bootstrap-will_paginate', '0.0.9'
-gem 'acts_as_tree', '~> 2.1.0'
+gem 'ancestry'
 gem 'awesome_print'
+
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'
   gem 'rspec-rails', '~> 2.14.0.rc1'
-  gem 'guard-rspec', '2.5.0'
+  gem 'guard-rspec', '4.3.1'
   gem 'spring-commands-rspec'
   gem 'better_errors'
   gem 'binding_of_caller'

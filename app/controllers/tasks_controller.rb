@@ -3,11 +3,12 @@ class TasksController < ApplicationController
   before_action :correct_user,   only: :destroy
 
   def create
-    @task = current_user.tasks.build task_params
+    @task = create_task
     if @task.save
       flash[:success] = "Task added"
-      redirect_to root_url
-    else      
+      redirect_to :back
+    else 
+      flash[:danger] = "Failed to add task"     
       @feed_items = current_user.feed.paginate page: params[:page] 
       render 'static_pages/home'
     end
@@ -42,7 +43,13 @@ class TasksController < ApplicationController
   private
 
     def task_params
-      params.require(:task).permit(:content)
+      params.require(:task).permit :content
+    end
+
+    def create_task
+      task = current_user.add_task task_params
+      task.parent_id = params[:task][:parent_id]
+      task
     end
 
     def correct_user

@@ -80,7 +80,7 @@ describe "User pages" do
 
       it { should_not have_title('All users') }
       it { should_not have_content('All users') }
-      it { should_not have_link('delete') }
+      it { should_not have_link("delete user") }
     end
 
     context "when signed in as an admin user" do
@@ -172,10 +172,12 @@ describe "User pages" do
 
   describe "profile page" do
     let(:user)    { FactoryGirl.create :user }
-    let!(:task1)  { FactoryGirl.create :task, user: user }
-    let!(:task2)  { FactoryGirl.create :completed_task, user: user }
+    let!(:task1)  { user.add_task content: "first" }
+    let!(:task2)  { user.add_task content: "second", completed: true }
 
     before do
+      task1.save!
+      task2.save!
       sign_in user
       visit user_path(user) 
     end

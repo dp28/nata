@@ -23,6 +23,19 @@ describe User do
   it { should be_valid }
   it { should_not be_admin }
 
+  describe "User.create" do
+    it "should create a new task for the User" do
+      expect { FactoryGirl.create :user }.to change(Task, :count).by(1)
+    end
+
+    describe "the created task" do
+      let(:new_user)  { FactoryGirl.create :user }
+      subject         { new_user.tasks.first }
+      it              { should eq(new_user.root_list) }
+      its(:content)   { should eq("My lists") }
+    end
+  end
+
   describe "with admin attribute set to 'true'" do
     before do
       user.save!
@@ -128,9 +141,33 @@ describe User do
   end
 
   describe "task associations" do
-    before { user.save }
-    let!(:older_task) { FactoryGirl.create :task, user: user, created_at: 1.day.ago }
-    let!(:newer_task) { FactoryGirl.create :task, user: user, created_at: 1.hour.ago }
+    subject!(:user)   { FactoryGirl.create :user }
+    let!(:older_task) { user.add_task content: "old task" }
+    let!(:newer_task) { user.add_task content: "new task"  }
+
+    before do
+      user.save! 
+      older_task.update_attribute :created_at, 1.day.ago
+      newer_task.update_attribute :created_at, 1.hour.ago
+    end 
+
+    its(:root_list) { should_not be nil }
+
+    describe "tasks other than the root list" do
+      it "should all be children of the user's root_list" do
+        [older_task, newer_task].each do |task|
+          expect(user.root_list.descendants).to include(task)
+        end
+      end
+    end
+
+    describe "the root list" do
+      it "should be an ancestor of all other tasks" do
+        [older_task, newer_task].each do |task|
+          expect(task.ancestors).to include(user.root_list)
+        end
+      end
+    end 
 
     it "should destroy associated tasks" do
       tasks = user.tasks.to_a
@@ -142,11 +179,13 @@ describe User do
     end
 
     describe "status" do
-      let(:completed_task) { FactoryGirl.create :completed_task, user: user }
-      let(:other_user_task) { FactoryGirl.create :task, user: FactoryGirl.create(:user) }
+      let(:completed_task)  { user.add_task completed: true }
+      let(:other_user_task) { FactoryGirl.create(:user).tasks.build }
+      let(:root_list)       { user.root_list }
 
       its(:feed) { should include(older_task) }
       its(:feed) { should include(newer_task) }
+      its(:feed) { should_not include(root_list) }
       its(:feed) { should_not include(completed_task) }
       its(:feed) { should_not include(other_user_task) }
     end

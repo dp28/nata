@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Task do
 
   let(:user)      { FactoryGirl.create :user }
-  subject(:task)  { user.tasks.build content: "Lorem ipsum" }
+  subject(:task)  { user.add_task content: "Lorem ipsum" } 
 
   it { should respond_to :content }
   it { should respond_to :user_id }
@@ -35,6 +35,25 @@ describe Task do
     before { task.complete! }
     it "should make the task incomplete" do
       expect { task.uncomplete! }.to change(task, :completed?).from(true).to(false) 
+    end
+  end
+
+  context "with no children" do
+    its(:is_leaf?) { should be true }
+  end
+
+  context "with a child task" do
+    before { task.save }
+    let!(:subtask) { task.add_task content: "subtask" }
+    its(:is_leaf?) { should be false } 
+
+    context "when the child is deleted" do
+      before do
+        subtask.save
+        subtask.destroy
+        task.reload
+      end
+      its(:is_leaf?) { should be true }
     end
   end
 end

@@ -1,9 +1,9 @@
 .row
-  aside.span4
+  aside.col-md-4
     section
       = render 'shared/user_info'
     section
-      = render 'shared/task_form'
-  .span8
+      = render 'shared/task_form', parent: current_user.root_list
+  .col-md-8
       h3 Task Feed
       = render "shared/feed"

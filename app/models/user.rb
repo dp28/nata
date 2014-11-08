@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
   has_many :tasks, dependent: :destroy
+
   before_save   :downcase_email
   before_create :create_activation_digest
+  after_create :add_root_list
 
   MAX_USER_NAME_LENGTH = 64
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -40,7 +42,7 @@ class User < ActiveRecord::Base
   end
 
   def feed
-    tasks.incomplete.order :created_at
+    tasks.without_children.incomplete.order(:created_at)
   end
 
   def send_activation_email
@@ -66,6 +68,14 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
 
+  def root_list
+    tasks.first
+  end
+
+  def add_task params={}
+    root_list.add_task params
+  end
+
   private 
 
     def downcase_email
@@ -75,5 +85,10 @@ class User < ActiveRecord::Base
     def create_activation_digest
       self.activation_token  = User.new_token
       self.activation_digest = User.digest activation_token
+    end
+
+    def add_root_list
+      self.tasks.create content: "My lists" 
+      true
     end
 end

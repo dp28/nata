@@ -9,7 +9,7 @@ addCarets = ->
 
 # Expanding/collapsing lists
 $(document).ready ->
-  $(".list_expansion_toggle").click ->
+  $(this).on "click", ".list_expansion_toggle", ->
     toggleListExpanded($(this).closest(".task"))
     toggleGlyph(this)
 

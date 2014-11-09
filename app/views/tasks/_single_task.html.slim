@@ -5,6 +5,5 @@
 
 .task_list.col-xs-11.col-xs-offset-1 id="#{append_id('list_body_for', task)}" 
     = render "shared/task_form", parent: task
-    - if task.has_children? 
-      ul id="#{append_id('children_for', task)}"
-        = render "tasks/tasks", tasks: task.children, expand_levels: expand_levels
+    ul id="#{append_id('children_for', task)}"
+      = render "tasks/tasks", tasks: task.children, expand_levels: expand_levels

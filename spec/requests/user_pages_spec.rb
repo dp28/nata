@@ -171,13 +171,12 @@ describe "User pages" do
   end
 
   describe "profile page" do
-    let(:user)    { FactoryGirl.create :user }
-    let!(:task1)  { user.add_task content: "first" }
-    let!(:task2)  { user.add_task content: "second", completed: true }
+    let(:user)      { FactoryGirl.create :user }
+    let!(:sublist)  { task_for user }
+    let!(:task)     { task_for user, completed: true }
+    let!(:subtask)  { task_for sublist }
 
     before do
-      task1.save!
-      task2.save!
       sign_in user
       visit user_path(user) 
     end
@@ -186,11 +185,19 @@ describe "User pages" do
     it { should have_title(user.name) }
 
     describe "tasks" do
-      it { should have_content(task1.content) }
-      it { should have_content(task2.content) }
+      it { should have_content(sublist.content) }
+      it { should have_content(task.content) }
       it { should have_css(".completed") }
       it { should have_css(".incomplete") }
       it { should have_content(user.tasks.count) } 
+      it { should_not have_content(subtask.content) }
+
+      describe "expanding a sublist" do
+        before { click_link append_id("get_children_for", sublist) }
+        it { should have_content(sublist.content) }
+        it { should have_content(task.content) }
+        it { should have_content(subtask.content) }
+      end
     end
   end
 end

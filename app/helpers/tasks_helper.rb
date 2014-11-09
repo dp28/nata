@@ -8,6 +8,10 @@ module TasksHelper
     "#{string}_task_#{task.id}"
   end
 
+  def expanded? level
+    level > 1
+  end
+
   private
 
     def wrap_long_string text, max_width = 30

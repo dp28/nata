@@ -34,6 +34,12 @@
   }
 }
 
+.collapsed_list {
+  .task_list {
+    display: none;
+  }
+}
+
 .task_list ul {
   list-style: none;
   padding-left: 0px;

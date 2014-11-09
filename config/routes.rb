@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     member do
       post :complete
       post :uncomplete
+      post :children
     end
   end
   resources :account_activations, only: [:edit]

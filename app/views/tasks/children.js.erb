@@ -1,0 +1,17 @@
+$("#task_<%= @task.id %>").toggleClass("expanded_list")
+$("#task_<%= @task.id %>").toggleClass("collapsed_list")
+
+var task_list = $("#children_for_task_<%= @task.id %>")
+task_list.fadeOut(200, function(){
+   task_list.html("<%= escape_javascript(render 'tasks/tasks', tasks: @task.children) %>");
+   task_list.hide();
+   task_list.fadeIn(200);
+});
+
+var collapse_link = '<a href="#" id="hide_children_for_task_<%= @task.id %>">collapse</a>'
+$("#get_children_for_task_<%= @task.id %>").replaceWith(collapse_link)  
+$("#hide_children_for_task_<%= @task.id %>").click(function() {  
+  $("#task_<%= @task.id %>").toggleClass("expanded_list") 
+  $("#task_<%= @task.id %>").toggleClass("collapsed_list") 
+  $("#task_<%= @task.id %>").find(".task_list").html("")
+})

@@ -1,0 +1,14 @@
+- levels_to_expand = defined?(level) ? level : 1
+- if expanded?(levels_to_expand)
+  a collapse
+- else 
+  = link_to "expand", { controller: :tasks, action: :children, id: list.id }, 
+                      { remote: true, method: :post, id: append_id("get_children_for", list) }
+span.content
+  = list.content
+= link_to "delete", list, { method: :delete, 
+                            data: { confirm: "Are you sure?" },
+                            title: list.content,
+                            remote: true,
+                            class: "delete_task",
+                            id: append_id("delete", list) }

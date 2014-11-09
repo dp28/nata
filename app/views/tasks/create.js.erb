@@ -1,7 +1,7 @@
 $("#new_child_content_task_<%= @task.parent.id %>").val("")
 var task_list = $("#children_for_task_<%= @task.parent.id %>")
 task_list.fadeOut(200, function(){
-   task_list.html("<%= escape_javascript(render @task.siblings) %>");
+   task_list.html("<%= escape_javascript(render 'tasks/tasks', tasks: @task.siblings) %>");
    task_list.hide();
    task_list.fadeIn(200);
 });

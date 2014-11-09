@@ -1,2 +1,3 @@
+- levels_to_expand = defined?(level) ? level : 1
 li
-  = render "tasks/single_task", task: task
+  = render "tasks/single_task", task: task, level: levels_to_expand

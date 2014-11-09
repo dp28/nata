@@ -23,3 +23,10 @@ end
 def xpath_match_class class_attr
   "contains(concat(' ',normalize-space(@class),' '),' #{class_attr} ')"
 end
+
+def task_for user_or_task, params={}
+  params.reverse_merge! content: "test task #{rand} created at #{Time.now}"
+  task = user_or_task.add_task params
+  task.save!
+  task
+end

@@ -156,6 +156,13 @@ input {
 .checkbox {
   margin-top: -10px;
   margin-bottom: 10px;
+
+  input[type="checkbox"] {
+    margin-left: 0px;
+    width: auto;
+    position: relative;
+  }
+
   span {
     margin-left: 20px;
     font-weight: normal;

@@ -15,6 +15,8 @@
     = task.content
 
   .suffix
+    .list_expansion_toggle.btn.btn-default.btn-xs data-toggle-glyph="chevron-down"
+      span.glyphicon.glyphicon-list
     = link_to "delete", task, { method: :delete, 
                                 data: { confirm: "Are you sure?" },
                                 title: task.content,

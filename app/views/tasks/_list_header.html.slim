@@ -1,10 +1,9 @@
 .list_header.col-xs-12
   .prefix
-    .list_expansion_toggle id="#{append_id('list_expansion', list)}" href="#" rel="nofollow"
-      - if expanded?(expand_levels) 
-        span.glyphicon.glyphicon-chevron-down
-      - else
-        span.glyphicon.glyphicon-chevron-right
+    - glyph_from  = expanded?(expand_levels) ? "chevron-down"  : "chevron-right"
+    - glyph_to    = expanded?(expand_levels) ? "chevron-right" : "chevron-down"
+    .list_expansion_toggle id="#{append_id('list_expansion', list)}" data-toggle-glyph="#{glyph_to}"
+      span class="glyphicon glyphicon-#{glyph_from}"
 
   .content
     = list.content

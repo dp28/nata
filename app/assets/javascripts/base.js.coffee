@@ -10,12 +10,19 @@ addCarets = ->
 # Expanding/collapsing lists
 $(document).ready ->
   $(".list_expansion_toggle").click ->
-    list = $(this).closest(".task")
-    list.toggleClass("expanded_list")
-    list.toggleClass("collapsed_list")
-    chevron_type = if list.hasClass("collapsed_list") then "right" else "down"
-    glyph = "<span class=\"glyphicon glyphicon-chevron-#{chevron_type}\"></span>"
-    $(this).html(glyph)
+    toggleListExpanded($(this).closest(".task"))
+    toggleGlyph(this)
+
+toggleListExpanded = (list) ->
+  list.toggleClass("expanded_list")
+  list.toggleClass("collapsed_list")
+
+toggleGlyph = (element) ->
+  new_glyph_type = $(element).attr("data-toggle-glyph")
+  current_glyph_type = $(element).find("span").attr("class").match(/glyphicon-([\w-]+)\b/)[1]
+  $(element).attr("data-toggle-glyph", current_glyph_type)
+  glyph = "<span class=\"glyphicon glyphicon-#{new_glyph_type}\"></span>"
+  $(element).html(glyph)
 
 # Improved "confirm" dialogue box for deleting
 $.rails.allowAction = (link) ->

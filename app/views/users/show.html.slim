@@ -9,4 +9,6 @@
       h3 
         | Tasks 
         = @user.tasks.count 
-      = render "tasks/single_task", task: @root_list, level: 2
+      .task_list.col-xs-12
+        ul
+          = render "tasks/task", task: @root_list, expand_levels: 2

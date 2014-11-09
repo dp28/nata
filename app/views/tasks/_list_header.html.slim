@@ -1,9 +1,8 @@
-- levels_to_expand = defined?(level) ? level : 1
-- if expanded?(levels_to_expand)
-  a collapse
-- else 
-  = link_to "expand", { controller: :tasks, action: :children, id: list.id }, 
-                      { remote: true, method: :post, id: append_id("get_children_for", list) }
+.btn.list_expansion_toggle id="#{append_id('list_expansion', list)}" href="#" rel="nofollow"
+  - if expanded?(expand_levels) 
+    span.glyphicon.glyphicon-collapse-down
+  - else
+    span.glyphicon.glyphicon-expand
 span.content
   = list.content
 = link_to "delete", list, { method: :delete, 

@@ -3,6 +3,6 @@ $('.delete_task').bind('ajax:success', function() {
 }); 
 
 <%- unless @task.root? %>
-  var parent_html = $("<%= escape_javascript(render('tasks/single_task', task: @task.parent)) %>");
+  var parent_html = $("<%= escape_javascript(render('tasks/task', task: @task.parent)) %>");
   $('#task_<%= @task.parent.id %>').replaceWith(parent_html);
 <% end %>

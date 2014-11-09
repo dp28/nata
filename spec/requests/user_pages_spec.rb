@@ -190,13 +190,10 @@ describe "User pages" do
       it { should have_css(".completed") }
       it { should have_css(".incomplete") }
       it { should have_content(user.tasks.count) } 
-      it { should_not have_content(subtask.content) }
+      it { should have_content(subtask.content) }
 
-      describe "expanding a sublist" do
-        before { click_link append_id("get_children_for", sublist) }
-        it { should have_content(sublist.content) }
-        it { should have_content(task.content) }
-        it { should have_content(subtask.content) }
+      it "should hide child tasks of sublists" do
+        expect(page.find("#task_#{sublist.id}")["class"]).to include("collapsed_list")
       end
     end
   end

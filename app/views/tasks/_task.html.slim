@@ -1,3 +1,4 @@
-- levels_to_expand = defined?(level) ? level : 1
-li
-  = render "tasks/single_task", task: task, level: levels_to_expand
+- levels_to_expand = defined?(expand_levels) ? expand_levels : 1
+- list_state_class = expanded?(levels_to_expand) ? "expanded_list" : "collapsed_list"
+li id="task_#{task.id}" class="task row #{list_state_class}"
+  = render "tasks/single_task", task: task, expand_levels: levels_to_expand

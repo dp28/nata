@@ -7,6 +7,16 @@ addCarets = ->
   to_add.click ->
     $(this).find(".caret").toggleClass("caret-right")
 
+# Expanding/collapsing lists
+$(document).ready ->
+  $(".list_expansion_toggle").click ->
+    list = $(this).closest(".task")
+    list.toggleClass("expanded_list")
+    list.toggleClass("collapsed_list")
+    glyph_type = if list.hasClass("collapsed_list") then "expand" else "collapse-down"
+    glyph = "<span class=\"glyphicon glyphicon-#{glyph_type}\"></span>"
+    $(this).html(glyph)
+
 # Improved "confirm" dialogue box for deleting
 $.rails.allowAction = (link) ->
   return true unless link.attr('data-confirm')

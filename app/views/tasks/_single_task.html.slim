@@ -1,14 +1,10 @@
-- levels_to_expand = defined?(level) ? level : 1
-- list_state_class = expanded?(levels_to_expand) ? "expanded_list" : "collapsed_list"
-div id="task_#{task.id}" class="task row #{list_state_class}"
+- if task.has_children?
+  = render "tasks/list_header", list: task, expand_levels: expand_levels
+- else
+  = render "tasks/task_body", task: task
 
-  - if task.has_children?
-    = render "tasks/list_body", list: task, level: levels_to_expand
-  - else
-    = render "tasks/task_body", task: task
-  .task_list.col-xs-11.col-xs-offset-1 
-      = render "shared/task_form", parent: task
-      - if task.has_children? 
-        ul id="#{append_id('children_for', task)}"
-          - if expanded?(levels_to_expand)
-            = render "tasks/tasks", tasks: task.children, level: levels_to_expand
+.task_list.col-xs-11.col-xs-offset-1 id="#{append_id('list_body_for', task)}" 
+    = render "shared/task_form", parent: task
+    - if task.has_children? 
+      ul id="#{append_id('children_for', task)}"
+        = render "tasks/tasks", tasks: task.children, expand_levels: expand_levels

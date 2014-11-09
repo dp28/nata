@@ -34,9 +34,14 @@
   }
 }
 
+.list_expansion_toggle {
+  display: inline;
+}
+
 .collapsed_list {
   .task_list {
     display: none;
+    visibility: hidden;
   }
 }
 

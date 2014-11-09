@@ -33,11 +33,6 @@ class TasksController < ApplicationController
     respond
   end
 
-  def children
-    @task = Task.find(params[:id])
-    respond    
-  end
-
   private
 
     def task_params

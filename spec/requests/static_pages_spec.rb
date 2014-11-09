@@ -19,8 +19,8 @@ describe "StaticPages" do
     context "for signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
       before do
-        FactoryGirl.create(:task, user: user, content: "Lorem ipsum")
-        FactoryGirl.create(:task, user: user, content: "Dolor sit amet")
+        user.add_task content: "Lorem ipsum"
+        user.add_task content: "Dolor sit amet"
         sign_in user
         visit root_path
       end

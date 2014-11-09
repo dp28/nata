@@ -1,7 +1,5 @@
 = form_for(Task.new, html: { remote: true, class: "task_form row" }) do |form| 
   = render 'shared/error_messages', object: form.object
-  .col-xs-10
-    = hidden_field_tag :parent_id, parent.id
-    = form.text_area :content, placeholder: "Add new task ...", id: append_id("new_child_content", parent) 
-  .col-xs-2
-    = form.submit "Add", class: "btn", id: append_id("add_child_to", parent)
+  = hidden_field_tag :parent_id, parent.id
+  = form.text_area :content, placeholder: "Add new task ...", id: append_id("new_child_content", parent)
+  = form.submit "Add", class: "btn btn-primary add_button", id: append_id("add_child_to", parent)

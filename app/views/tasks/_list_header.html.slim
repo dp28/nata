@@ -1,13 +1,18 @@
-.btn.list_expansion_toggle id="#{append_id('list_expansion', list)}" href="#" rel="nofollow"
-  - if expanded?(expand_levels) 
-    span.glyphicon.glyphicon-collapse-down
-  - else
-    span.glyphicon.glyphicon-expand
-span.content
-  = list.content
-= link_to "delete", list, { method: :delete, 
-                            data: { confirm: "Are you sure?" },
-                            title: list.content,
-                            remote: true,
-                            class: "delete_task",
-                            id: append_id("delete", list) }
+.list_header.col-xs-12
+  .prefix
+    .list_expansion_toggle id="#{append_id('list_expansion', list)}" href="#" rel="nofollow"
+      - if expanded?(expand_levels) 
+        span.glyphicon.glyphicon-chevron-down
+      - else
+        span.glyphicon.glyphicon-chevron-right
+
+  .content
+    = list.content
+
+  .suffix
+    = link_to "delete", list, { method: :delete, 
+                                data: { confirm: "Are you sure?" },
+                                title: list.content,
+                                remote: true,
+                                class: "delete_task",
+                                id: append_id("delete", list) }
